@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skull King</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <section id="setup-screen">
+      <div id="num_players">
+        <label for="rowCount">Number of Players</label>
+        <!-- Changing this number instantly updates the table -->
+        <input type="number" id="rowCount" value="3" min="2" max="8" />
+      </div>
+
+      <table id="dynamicTable">
+        <tbody></tbody>
+      </table>
+      <div id="btn">
+        <button id="start-btn">Start Game</button>
+      </div>
+    </section>
+  </body>
+</html>

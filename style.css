@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  background: #121213;
+  font-family: "Rock Salt", cursive;
+}
+#num_players label {
+  text-align: center;
+  color: white;
+  margin: 0;
+  font-size: 1.5em;
+}
+
+#num_players input {
+  text-align: center;
+  color: #e1c050;
+  margin: 0;
+  font-size: 1.5em;
+  background: #616163;
+  font-family: "Rock Salt", cursive;
+  border-radius: 8px;
+}
+
+#num_players {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  background-color: #222328;
+  color: #efefef;
+  width: 100%;
+}
+
+#dynamicTable td {
+  font-size: 1em;
+  text-align: center;
+  padding: 10px;
+}
+
+.num {
+  width: 75px;
+  color: #e1c050;
+}
+
+.player {
+  width: 300px;
+  color: #efefef;
+}
+
+.rock-salt-regular {
+  font-family: "Rock Salt", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#start-btn {
+  background: #e1c050;
+  padding: 10px;
+  font-family: "Rock Salt", cursive;
+  color: #222328;
+  border-radius: 8px;
+  margin-top: 24px
+}
+#setup-screen {
+  display: grid;
+  place-items: center;
+}
