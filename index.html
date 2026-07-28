@@ -14,18 +14,41 @@
     />
   </head>
   <body>
-    <section id="setup-screen">
+    <!-- Screen 1: Game Mode Selection (Visible by default) -->
+    <section id="game-mode">
+      <h1>Skull King</h1>
+      <h2>Select Game Mode:</h2>
+      <div id="mode-select">
+        <button>Normal</button>
+        <button>Odd Only</button>
+        <button>Even Only</button>
+      </div>
+    </section>
+
+    <!-- Screen 2: Player Setup Screen -->
+    <section id="setup-screen" class="hidden">
       <div id="num_players">
         <label for="rowCount">Number of Players</label>
-        <!-- Changing this number instantly updates the table -->
         <input type="number" id="rowCount" value="3" min="2" max="8" />
       </div>
 
       <table id="dynamicTable">
         <tbody></tbody>
       </table>
-      <div id="btn">
+      <div class="btn-container">
         <button id="start-btn">Start Game</button>
+      </div>
+    </section>
+
+    <!-- Screen 3: Gameplay / Rounds Screen -->
+    <section id="rounds" class="hidden">
+      <h2 id="round-title">Round 1</h2>
+
+      <!-- JavaScript will dynamically insert player scorecards here -->
+      <div id="players-container"></div>
+
+      <div class="btn-container">
+        <button type="submit" id="submit-round-btn">Submit Round</button>
       </div>
     </section>
   </body>
