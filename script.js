@@ -12,9 +12,12 @@ const startGameBtn = document.getElementById("start-btn");
 const playersContainer = document.getElementById("players-container");
 const submitRoundBtn = document.getElementById("submit-round-btn");
 
-// Toggle selector for Rascel of Roatan scoring
+// Toggle selectors for scoring variations
 const rascelToggle = document.querySelector(
   "#rascel-scoring input[type='checkbox']",
+);
+const grimesToggle = document.querySelector(
+  "#grimes-family input[type='checkbox']",
 );
 
 let selectedGameMode = "Normal";
@@ -80,6 +83,7 @@ function saveGameState() {
     playerCount: input.value,
     currentRoundIndex: currentRoundIndex,
     rascelScoringEnabled: rascelToggle ? rascelToggle.checked : false,
+    grimesScoringEnabled: grimesToggle ? grimesToggle.checked : false,
   };
   localStorage.setItem("skullKingState", JSON.stringify(gameState));
 }
@@ -97,6 +101,9 @@ function loadGameState() {
   if (rascelToggle && gameState.rascelScoringEnabled !== undefined) {
     rascelToggle.checked = gameState.rascelScoringEnabled;
   }
+  if (grimesToggle && gameState.grimesScoringEnabled !== undefined) {
+    grimesToggle.checked = gameState.grimesScoringEnabled;
+  }
 
   if (gameState.playerCount) {
     input.value = gameState.playerCount;
@@ -113,9 +120,12 @@ function loadGameState() {
   }
 }
 
-// Listen for Rascel toggle changes to persist state
+// Listen for toggle changes to persist state
 if (rascelToggle) {
   rascelToggle.addEventListener("change", saveGameState);
+}
+if (grimesToggle) {
+  grimesToggle.addEventListener("change", saveGameState);
 }
 
 // ==========================================
@@ -209,6 +219,7 @@ function renderRoundPlayers() {
   const cardsDealt = getCardsDealt();
   const sequence = getRoundSequence(selectedGameMode);
   const totalRounds = sequence.length;
+  const isGrimesMode = grimesToggle && grimesToggle.checked;
 
   const roundTitle = document.getElementById("round-title");
   if (roundTitle) {
@@ -224,18 +235,17 @@ function renderRoundPlayers() {
     playerBlock.classList.add("player-round-card");
     playerBlock.dataset.playerIndex = index;
 
-    // Display position place using player.place
     playerBlock.innerHTML = `
       <div class="player-info">
         <label class="player-name">${player.name}</label>
         <label class="place">${getOrdinal(player.place || 1)}</label>
         <label class="total-points">${player.score} Pts.</label>
       </div>
-      <div class="player-points">
+      <div class="player-points ${isGrimesMode ? "grimes-mode" : ""}">
         <input type="number" class="bids" placeholder="Bid" min="0" max="${cardsDealt}" />
         <input type="number" class="won" placeholder="Won" min="0" max="${cardsDealt}" />
         <input type="number" class="points" placeholder="Points" readonly />
-        <input type="number" class="bonus" placeholder="Bonus" min="0" />
+        <input type="number" class="bonus" placeholder="Bonus" min="0" ${isGrimesMode ? 'style="display:none;"' : ""} />
         <input type="number" class="total" placeholder="Total" readonly />
       </div>
     `;
@@ -296,8 +306,16 @@ function calculatePlayerScore(card) {
   let totalBonus = 0;
 
   const isRascelMode = rascelToggle && rascelToggle.checked;
+  const isGrimesMode = grimesToggle && grimesToggle.checked;
 
-  if (isRascelMode) {
+  if (isGrimesMode) {
+    // ==========================================
+    // GRIMES FAMILY SCORING
+    // ==========================================
+    // Hit bid: 0 points. Miss bid: 1 point. No bonus points.
+    roundPoints = bid === won ? 0 : 1;
+    totalBonus = 0;
+  } else if (isRascelMode) {
     // ==========================================
     // RASCEL OF ROATAN (EVEN KEELED) SCORING
     // ==========================================
@@ -411,7 +429,10 @@ if (submitRoundBtn) {
     });
 
     // Calculate ranking positions dynamically
-    const sortedScores = [...players].map((p) => p.score).sort((a, b) => b - a);
+    const isGrimesMode = grimesToggle && grimesToggle.checked;
+    const sortedScores = [...players]
+      .map((p) => p.score)
+      .sort((a, b) => (isGrimesMode ? a - b : b - a)); // Lowest points win for Grimes mode
 
     players.forEach((player) => {
       player.place = sortedScores.indexOf(player.score) + 1;
@@ -422,7 +443,11 @@ if (submitRoundBtn) {
     currentRoundIndex++;
 
     if (currentRoundIndex >= sequence.length) {
-      const winner = [...players].sort((a, b) => b.score - a.score)[0];
+      // Determine winner based on active ruleset
+      const winner = [...players].sort((a, b) =>
+        isGrimesMode ? a.score - b.score : b.score - a.score,
+      )[0];
+
       let msg = `Game Over!\n\nWinner: ${winner.name} with ${winner.score} points!`;
       if (selectedGameMode === "Past Your Bedtime") {
         msg += "\n\n...Now go get a goodnight hug! 🤗";

@@ -389,3 +389,12 @@ input:checked + .slider:before {
   color: #222328;
 }
 
+/* Hide Bonus and adjust grid layout for Grimes Family Mode */
+.player-points.grimes-mode {
+  grid-template-columns: minmax(50px, 75px) repeat(2, minmax(0, 1fr));
+}
+
+.player-points.grimes-mode .total {
+  grid-column: 3 / 4;
+}
+
