@@ -75,7 +75,7 @@ button:hover {
 
 #mode-select button {
   width: 80%;
-  max-width: 300px;
+  max-width: 500px;
 }
 
 /* ==========================================
@@ -260,20 +260,6 @@ button:hover {
   #num_players label {
     font-size: 1em;
   }
-  .btn {
-  touch-action: manipulation; 
-  user-select: none; /* Prevents text highlighting on long press */
-}
-
-  .btn .hover-text {
-    display: none;
-  }
-  .btn:active .default-text {
-    display: none;
-  }
-  .btn:active .hover-text {
-    display: inline;
-  }
 }
 
 /* The switch - the box around the slider */
@@ -381,12 +367,25 @@ input:checked + .slider:before {
   margin-top: 6px;
 }
 
-.btn .hover-text {
-  display: none;
+.btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  gap: 4px; /* Controls space between the two text lines */
+  cursor: pointer;
 }
-.btn:hover .default-text {
-  display: none;
+
+.btn .top-line {
+  font-size: 24px;
+  font-weight: 900;
+  color: #222328;
 }
-.btn:hover .hover-text {
-  display: inline;
+
+.btn .bottom-line {
+  font-size: 12px;
+  font-weight: normal;
+  color: #222328;
 }
+
