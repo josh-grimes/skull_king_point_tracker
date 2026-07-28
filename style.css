@@ -260,8 +260,17 @@ button:hover {
   #num_players label {
     font-size: 1em;
   }
-}
 
+  .btn .hover-text {
+    display: none;
+  }
+  .btn:active .default-text {
+    display: none;
+  }
+  .btn:active .hover-text {
+    display: inline;
+  }
+}
 
 /* The switch - the box around the slider */
 .switch {
@@ -288,8 +297,8 @@ button:hover {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -300,8 +309,8 @@ button:hover {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
@@ -327,9 +336,12 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-#expansion, #rascel-scoring{
+#expansion,
+#rascel-scoring,
+#grimes-family {
   text-align: center;
   color: #e1c050;
+  margin-bottom: 20px;
 }
 #expansion {
   grid-row: 1/2;
@@ -342,12 +354,18 @@ input:checked + .slider:before {
   display: grid;
   grid-template-columns: 1fr 0.5fr;
 }
+
+#grimes-family {
+  grid-row: 3/4;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+}
 #togglable {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   width: 80%;
-  max-width: 300px;
+  max-width: 400px;
   margin: auto;
 }
 
@@ -359,3 +377,12 @@ input:checked + .slider:before {
   margin-top: 6px;
 }
 
+.btn .hover-text {
+  display: none;
+}
+.btn:hover .default-text {
+  display: none;
+}
+.btn:hover .hover-text {
+  display: inline;
+}

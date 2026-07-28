@@ -19,7 +19,10 @@
       <h1>Skull King</h1>
       <h2>Select Game Mode:</h2>
       <div id="mode-select">
-        <button>Normal</button>
+        <button class="btn">
+          <span class="default-text">Normal</span>
+          <span class="hover-text">10 rounds in ascending order</span>
+        </button>
         <button>Even Keeled</button>
         <button>Skip to the Brawl</button>
         <button>Swift-n-Salty Skirmish</button>
@@ -38,6 +41,13 @@
         </div>
         <div id="rascel-scoring">
           <label>Rascel of Roatan Scoring</label>
+          <label class="switch">
+            <input type="checkbox" />
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div id="grimes-family">
+          <label>Grimes Family Scoring</label>
           <label class="switch">
             <input type="checkbox" />
             <span class="slider round"></span>
@@ -72,6 +82,5 @@
         <button type="submit" id="submit-round-btn">Submit Round</button>
       </div>
     </section>
-    
   </body>
 </html>
