@@ -37,10 +37,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
 /* ==========================================
    2. REUSABLE BUTTON & CONTAINER STYLES
    ========================================== */

@@ -151,6 +151,7 @@ function handleStartGame() {
       id: index + 1,
       name: name,
       score: 0,
+      place: 1, // Default rank before scores are submitted
     });
   });
 
@@ -178,10 +179,11 @@ function renderRoundPlayers() {
     playerBlock.classList.add("player-round-card");
     playerBlock.dataset.playerIndex = index;
 
+    // Display position place using player.place instead of array index
     playerBlock.innerHTML = `
       <div class="player-info">
         <label class="player-name">${player.name}</label>
-        <label class="place">${getOrdinal(index + 1)}</label>
+        <label class="place">${getOrdinal(player.place || 1)}</label>
         <label class="total-points">${player.score} Pts.</label>
       </div>
       <div class="player-points">
@@ -208,6 +210,14 @@ function attachRealtimeCalculations() {
     const bonusInput = card.querySelector(".bonus");
 
     const updateCardScores = () => {
+      // Validate that this specific player's bid does not exceed currentRound
+      if (parseInt(bidInput.value) > currentRound) {
+        alert(
+          `Your bid cannot be higher than the round number (${currentRound})!`,
+        );
+        bidInput.value = currentRound;
+      }
+
       calculatePlayerScore(card);
       validateTotalWonTricks();
     };
@@ -283,6 +293,7 @@ if (submitRoundBtn) {
     const cards = document.querySelectorAll(".player-round-card");
     let allValid = true;
     let totalWon = 0;
+    let invalidBidFound = false;
 
     cards.forEach((card) => {
       const bidVal = card.querySelector(".bids").value;
@@ -291,12 +302,21 @@ if (submitRoundBtn) {
       if (bidVal === "" || wonVal === "") {
         allValid = false;
       } else {
+        const individualBid = parseInt(bidVal) || 0;
+        if (individualBid > currentRound) {
+          invalidBidFound = true;
+        }
         totalWon += parseInt(wonVal) || 0;
       }
     });
 
     if (!allValid) {
       alert("Please enter both Bid and Won values for all players.");
+      return;
+    }
+
+    if (invalidBidFound) {
+      alert(`No single player's bid can be higher than ${currentRound}.`);
       return;
     }
 
@@ -307,15 +327,19 @@ if (submitRoundBtn) {
       return;
     }
 
-    // Add round results to player scores
+    // Add round results to player scores without reordering the original array
     cards.forEach((card) => {
       const playerIndex = parseInt(card.dataset.playerIndex);
       const roundTotal = parseInt(card.querySelector(".total").value) || 0;
       players[playerIndex].score += roundTotal;
     });
 
-    // Sort players by highest score
-    players.sort((a, b) => b.score - a.score);
+    // Calculate ranking positions dynamically
+    const sortedScores = [...players].map((p) => p.score).sort((a, b) => b - a);
+
+    players.forEach((player) => {
+      player.place = sortedScores.indexOf(player.score) + 1;
+    });
 
     // Advance to next round based on selected game mode
     if (selectedGameMode === "Odd Only" || selectedGameMode === "Even Only") {
