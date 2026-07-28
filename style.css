@@ -351,4 +351,11 @@ input:checked + .slider:before {
   margin: auto;
 }
 
+/* Subtitle for card count under round heading */
+.card-count-subtitle {
+  display: block;
+  font-size: 0.65em;
+  color: #ffffff;
+  margin-top: 6px;
+}
 

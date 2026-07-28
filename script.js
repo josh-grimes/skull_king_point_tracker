@@ -212,7 +212,11 @@ function renderRoundPlayers() {
 
   const roundTitle = document.getElementById("round-title");
   if (roundTitle) {
-    roundTitle.textContent = `Round ${currentRoundIndex + 1} ${cardsDealt} Card(s)`;
+    const cardText = cardsDealt === 1 ? "1 Card" : `${cardsDealt} Cards`;
+    roundTitle.innerHTML = `
+      Round ${currentRoundIndex + 1} of ${totalRounds}
+      <span class="card-count-subtitle">${cardText}</span>
+    `;
   }
 
   players.forEach((player, index) => {
