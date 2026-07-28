@@ -12,16 +12,48 @@ const startGameBtn = document.getElementById("start-btn");
 const playersContainer = document.getElementById("players-container");
 const submitRoundBtn = document.getElementById("submit-round-btn");
 
+// Toggle selector for Rascel of Roatan scoring
+const rascelToggle = document.querySelector(
+  "#rascel-scoring input[type='checkbox']",
+);
+
 let selectedGameMode = "Normal";
 let players = [];
 let currentScreen = "game-mode";
-let currentRound = 1;
+let currentRoundIndex = 0; // 0-based index for step progression
 
 // Helper function to format places (1st, 2nd, 3rd, etc.)
 function getOrdinal(n) {
   const s = ["th", "st", "nd", "rd"];
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
+// Helper to determine the sequence of card hand sizes based on the mode
+function getRoundSequence(mode) {
+  switch (mode) {
+    case "Even Keeled":
+      return [2, 4, 6, 8, 10];
+    case "Skip to the Brawl":
+      return [6, 7, 8, 9, 10];
+    case "Swift-n-Salty Skirmish":
+      return [5, 5, 5, 5, 5];
+    case "Broadside Barrage":
+      return [10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+    case "Whirlpool":
+      return [9, 7, 5, 3, 1, 9, 7, 5, 3, 1];
+    case "Past Your Bedtime":
+      return [1];
+    case "Normal":
+    default:
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  }
+}
+
+// Get the current hand size (cards dealt)
+function getCardsDealt() {
+  const sequence = getRoundSequence(selectedGameMode);
+  return sequence[currentRoundIndex] || sequence[sequence.length - 1];
 }
 
 // ==========================================
@@ -46,7 +78,8 @@ function saveGameState() {
     selectedGameMode: selectedGameMode,
     players: players,
     playerCount: input.value,
-    currentRound: currentRound,
+    currentRoundIndex: currentRoundIndex,
+    rascelScoringEnabled: rascelToggle ? rascelToggle.checked : false,
   };
   localStorage.setItem("skullKingState", JSON.stringify(gameState));
 }
@@ -59,7 +92,11 @@ function loadGameState() {
   currentScreen = gameState.currentScreen || "game-mode";
   selectedGameMode = gameState.selectedGameMode || "Normal";
   players = gameState.players || [];
-  currentRound = gameState.currentRound || 1;
+  currentRoundIndex = gameState.currentRoundIndex || 0;
+
+  if (rascelToggle && gameState.rascelScoringEnabled !== undefined) {
+    rascelToggle.checked = gameState.rascelScoringEnabled;
+  }
 
   if (gameState.playerCount) {
     input.value = gameState.playerCount;
@@ -74,6 +111,11 @@ function loadGameState() {
   } else {
     switchScreen("game-mode");
   }
+}
+
+// Listen for Rascel toggle changes to persist state
+if (rascelToggle) {
+  rascelToggle.addEventListener("change", saveGameState);
 }
 
 // ==========================================
@@ -155,12 +197,7 @@ function handleStartGame() {
     });
   });
 
-  // Set the starting round based on game mode
-  if (selectedGameMode === "Even Only") {
-    currentRound = 2;
-  } else {
-    currentRound = 1; // Normal or Odd Only mode
-  }
+  currentRoundIndex = 0; // Reset to the first round in the sequence
 
   renderRoundPlayers();
   switchScreen("rounds");
@@ -169,9 +206,13 @@ function handleStartGame() {
 function renderRoundPlayers() {
   playersContainer.innerHTML = "";
 
+  const cardsDealt = getCardsDealt();
+  const sequence = getRoundSequence(selectedGameMode);
+  const totalRounds = sequence.length;
+
   const roundTitle = document.getElementById("round-title");
   if (roundTitle) {
-    roundTitle.textContent = `Round ${currentRound}`;
+    roundTitle.textContent = `Round ${currentRoundIndex + 1} ${cardsDealt} Card(s)`;
   }
 
   players.forEach((player, index) => {
@@ -179,7 +220,7 @@ function renderRoundPlayers() {
     playerBlock.classList.add("player-round-card");
     playerBlock.dataset.playerIndex = index;
 
-    // Display position place using player.place instead of array index
+    // Display position place using player.place
     playerBlock.innerHTML = `
       <div class="player-info">
         <label class="player-name">${player.name}</label>
@@ -187,8 +228,8 @@ function renderRoundPlayers() {
         <label class="total-points">${player.score} Pts.</label>
       </div>
       <div class="player-points">
-        <input type="number" class="bids" placeholder="Bid" min="0" max="${currentRound}" />
-        <input type="number" class="won" placeholder="Won" min="0" max="${currentRound}" />
+        <input type="number" class="bids" placeholder="Bid" min="0" max="${cardsDealt}" />
+        <input type="number" class="won" placeholder="Won" min="0" max="${cardsDealt}" />
         <input type="number" class="points" placeholder="Points" readonly />
         <input type="number" class="bonus" placeholder="Bonus" min="0" />
         <input type="number" class="total" placeholder="Total" readonly />
@@ -203,6 +244,7 @@ function renderRoundPlayers() {
 
 function attachRealtimeCalculations() {
   const cards = document.querySelectorAll(".player-round-card");
+  const cardsDealt = getCardsDealt();
 
   cards.forEach((card) => {
     const bidInput = card.querySelector(".bids");
@@ -210,12 +252,12 @@ function attachRealtimeCalculations() {
     const bonusInput = card.querySelector(".bonus");
 
     const updateCardScores = () => {
-      // Validate that this specific player's bid does not exceed currentRound
-      if (parseInt(bidInput.value) > currentRound) {
+      // Validate that bid does not exceed available cards
+      if (parseInt(bidInput.value) > cardsDealt) {
         alert(
-          `Your bid cannot be higher than the round number (${currentRound})!`,
+          `Your bid cannot be higher than the number of cards dealt (${cardsDealt})!`,
         );
-        bidInput.value = currentRound;
+        bidInput.value = cardsDealt;
       }
 
       calculatePlayerScore(card);
@@ -244,28 +286,58 @@ function calculatePlayerScore(card) {
   const bid = parseInt(bidInput.value) || 0;
   const won = parseInt(wonInput.value) || 0;
   const bonus = parseInt(bonusInput.value) || 0;
+  const cardsDealt = getCardsDealt();
 
   let roundPoints = 0;
+  let totalBonus = 0;
 
-  if (bid === 0) {
-    // Zero Bid Rule
-    if (won === 0) {
-      roundPoints = currentRound * 10;
+  const isRascelMode = rascelToggle && rascelToggle.checked;
+
+  if (isRascelMode) {
+    // ==========================================
+    // RASCEL OF ROATAN (EVEN KEELED) SCORING
+    // ==========================================
+    const potentialPoints = cardsDealt * 10;
+    const diff = Math.abs(bid - won);
+
+    if (diff === 0) {
+      // Direct Hit
+      roundPoints = potentialPoints;
+      totalBonus = bonus;
+    } else if (diff === 1) {
+      // Glancing Blow
+      roundPoints = potentialPoints / 2;
+      totalBonus = bonus / 2;
     } else {
-      roundPoints = -(currentRound * 10);
+      // Complete Miss (diff >= 2)
+      roundPoints = 0;
+      totalBonus = 0;
     }
   } else {
-    // Non-Zero Bid Rule
-    if (bid === won) {
-      roundPoints = bid * 20;
+    // ==========================================
+    // STANDARD SCORING
+    // ==========================================
+    if (bid === 0) {
+      // Zero Bid Rule
+      if (won === 0) {
+        roundPoints = cardsDealt * 10;
+      } else {
+        roundPoints = -(cardsDealt * 10);
+      }
     } else {
-      const difference = Math.abs(bid - won);
-      roundPoints = -(difference * 10);
+      // Non-Zero Bid Rule
+      if (bid === won) {
+        roundPoints = bid * 20;
+      } else {
+        const difference = Math.abs(bid - won);
+        roundPoints = -(difference * 10);
+      }
     }
+
+    // Standard Bonus Points are awarded only on an exact hit
+    totalBonus = bid === won ? bonus : 0;
   }
 
-  // Bonus points are awarded only if the bid was exact
-  const totalBonus = bid === won ? bonus : 0;
   const roundTotal = roundPoints + totalBonus;
 
   pointsInput.value = roundPoints;
@@ -274,16 +346,15 @@ function calculatePlayerScore(card) {
 
 function validateTotalWonTricks() {
   const wonInputs = document.querySelectorAll(".player-points .won");
+  const cardsDealt = getCardsDealt();
   let totalWonSoFar = 0;
 
   wonInputs.forEach((i) => {
     totalWonSoFar += parseInt(i.value) || 0;
   });
 
-  if (totalWonSoFar > currentRound) {
-    alert(
-      `Total tricks won in Round ${currentRound} cannot exceed ${currentRound}!`,
-    );
+  if (totalWonSoFar > cardsDealt) {
+    alert(`Total tricks won in this round cannot exceed ${cardsDealt}!`);
   }
 }
 
@@ -291,6 +362,7 @@ function validateTotalWonTricks() {
 if (submitRoundBtn) {
   submitRoundBtn.addEventListener("click", () => {
     const cards = document.querySelectorAll(".player-round-card");
+    const cardsDealt = getCardsDealt();
     let allValid = true;
     let totalWon = 0;
     let invalidBidFound = false;
@@ -303,7 +375,7 @@ if (submitRoundBtn) {
         allValid = false;
       } else {
         const individualBid = parseInt(bidVal) || 0;
-        if (individualBid > currentRound) {
+        if (individualBid > cardsDealt) {
           invalidBidFound = true;
         }
         totalWon += parseInt(wonVal) || 0;
@@ -316,18 +388,18 @@ if (submitRoundBtn) {
     }
 
     if (invalidBidFound) {
-      alert(`No single player's bid can be higher than ${currentRound}.`);
+      alert(`No single player's bid can be higher than ${cardsDealt}.`);
       return;
     }
 
-    if (totalWon > currentRound) {
+    if (totalWon > cardsDealt) {
       alert(
-        `Invalid score! Total won tricks (${totalWon}) exceeds available tricks (${currentRound}) for Round ${currentRound}.`,
+        `Invalid score! Total won tricks (${totalWon}) exceeds available tricks (${cardsDealt}).`,
       );
       return;
     }
 
-    // Add round results to player scores without reordering the original array
+    // Add round results to player scores
     cards.forEach((card) => {
       const playerIndex = parseInt(card.dataset.playerIndex);
       const roundTotal = parseInt(card.querySelector(".total").value) || 0;
@@ -341,11 +413,19 @@ if (submitRoundBtn) {
       player.place = sortedScores.indexOf(player.score) + 1;
     });
 
-    // Advance to next round based on selected game mode
-    if (selectedGameMode === "Odd Only" || selectedGameMode === "Even Only") {
-      currentRound += 2;
-    } else {
-      currentRound += 1;
+    // Advance to the next round in sequence
+    const sequence = getRoundSequence(selectedGameMode);
+    currentRoundIndex++;
+
+    if (currentRoundIndex >= sequence.length) {
+      const winner = [...players].sort((a, b) => b.score - a.score)[0];
+      let msg = `Game Over!\n\nWinner: ${winner.name} with ${winner.score} points!`;
+      if (selectedGameMode === "Past Your Bedtime") {
+        msg += "\n\n...Now go get a goodnight hug! 🤗";
+      }
+      alert(msg);
+      switchScreen("game-mode");
+      return;
     }
 
     renderRoundPlayers();
