@@ -260,6 +260,10 @@ button:hover {
   #num_players label {
     font-size: 1em;
   }
+  .btn {
+  touch-action: manipulation; 
+  user-select: none; /* Prevents text highlighting on long press */
+}
 
   .btn .hover-text {
     display: none;
