@@ -130,9 +130,9 @@ function calculateModalTotal() {
     "#expansion input[type='checkbox']",
   );
   if (expansionToggle && expansionToggle.checked) {
-    if (document.getElementById("exp-8").checked) total += 5;
-    if (document.getElementById("exp-7").checked) total -= 5;
-    if (document.getElementById("first-mate").checked) total += 30;
+    total += (parseInt(document.getElementById("exp-8").value) || 0) * 5;
+    total -= (parseInt(document.getElementById("exp-7").value) || 0) * 5;
+    total += (parseInt(document.getElementById("first-mate").value) || 0) * 30;
     total +=
       (parseInt(document.getElementById("sea-monsters").value) || 0) * 20;
   }
@@ -159,9 +159,9 @@ function getModalState() {
     allianceActive: isAllianceActive,
     alliancePartnerIndex: partnerIndex,
     rascalBet: currentRascalBet,
-    exp8: document.getElementById("exp-8").checked,
-    exp7: document.getElementById("exp-7").checked,
-    firstMate: document.getElementById("first-mate").checked,
+    exp8: parseInt(document.getElementById("exp-8").value) || 0,
+    exp7: parseInt(document.getElementById("exp-7").value) || 0,
+    firstMate: parseInt(document.getElementById("first-mate").value) || 0,
     seaMonsters: parseInt(document.getElementById("sea-monsters").value) || 0,
   };
 }
@@ -217,10 +217,16 @@ function populateModalForm(savedState, activePlayerIndex) {
     if (activeBtn) activeBtn.classList.add("active");
   }
 
-  document.getElementById("exp-8").checked = !!savedState.exp8;
-  document.getElementById("exp-7").checked = !!savedState.exp7;
-  document.getElementById("first-mate").checked = !!savedState.firstMate;
-  document.getElementById("sea-monsters").value = savedState.seaMonsters || 0;
+  document.getElementById("exp-8").value = Math.min(4, savedState.exp8 || 0);
+  document.getElementById("exp-7").value = Math.min(4, savedState.exp7 || 0);
+  document.getElementById("first-mate").value = Math.min(
+    1,
+    savedState.firstMate || 0,
+  );
+  document.getElementById("sea-monsters").value = Math.min(
+    3,
+    savedState.seaMonsters || 0,
+  );
 }
 
 // Bind listeners to recalculate dynamically on change
@@ -267,9 +273,6 @@ function resetModalForm() {
     .querySelectorAll("#bonus-modal input[type='number']")
     .forEach((i) => (i.value = 0));
   document
-    .querySelectorAll("#bonus-modal input[type='checkbox']")
-    .forEach((i) => (i.checked = false));
-  document
     .querySelectorAll(".rascal-btn[data-value]")
     .forEach((b) => b.classList.remove("active"));
   currentRascalBet = 0;
@@ -311,9 +314,9 @@ if (applyBonusBtn) {
             mermaidsCaptured: 0,
             skByMermaid: 0,
             rascalBet: 0,
-            exp8: false,
-            exp7: false,
-            firstMate: false,
+            exp8: 0,
+            exp7: 0,
+            firstMate: 0,
             seaMonsters: 0,
           };
 
@@ -330,9 +333,9 @@ if (applyBonusBtn) {
           partnerTotal += 20; // Partner Alliance +20
           partnerTotal += partnerData.rascalBet || 0;
 
-          if (partnerData.exp8) partnerTotal += 5;
-          if (partnerData.exp7) partnerTotal -= 5;
-          if (partnerData.firstMate) partnerTotal += 30;
+          partnerTotal += (partnerData.exp8 || 0) * 5;
+          partnerTotal -= (partnerData.exp7 || 0) * 5;
+          partnerTotal += (partnerData.firstMate || 0) * 30;
           partnerTotal += (partnerData.seaMonsters || 0) * 20;
 
           partnerBonusInput.value = partnerTotal;

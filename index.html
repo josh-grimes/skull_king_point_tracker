@@ -330,27 +330,90 @@
             <h4>Expansion & Special Cards</h4>
 
             <div class="bonus-option">
-              <span class="bonus-label">Expansion 8 (+5)</span>
-              <label class="switch-sm">
-                <input type="checkbox" id="exp-8" />
-                <span class="slider round"></span>
-              </label>
+              <span class="bonus-label">Expansion 8s (+5 ea)</span>
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="exp-8"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="exp-8"
+                  value="0"
+                  data-max="4"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="exp-8"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
             </div>
 
             <div class="bonus-option">
-              <span class="bonus-label">Expansion 7 (-5)</span>
-              <label class="switch-sm">
-                <input type="checkbox" id="exp-7" />
-                <span class="slider round"></span>
-              </label>
+              <span class="bonus-label">Expansion 7s (-5 ea)</span>
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="exp-7"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="exp-7"
+                  value="0"
+                  data-max="4"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="exp-7"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
             </div>
 
             <div class="bonus-option">
               <span class="bonus-label">First Mate (+30)</span>
-              <label class="switch-sm">
-                <input type="checkbox" id="first-mate" />
-                <span class="slider round"></span>
-              </label>
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="first-mate"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="first-mate"
+                  value="0"
+                  data-max="1"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="first-mate"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
             </div>
 
             <div class="bonus-option">
@@ -364,7 +427,13 @@
                 >
                   -
                 </button>
-                <input type="number" id="sea-monsters" value="0" readonly />
+                <input
+                  type="number"
+                  id="sea-monsters"
+                  value="0"
+                  data-max="3"
+                  readonly
+                />
                 <button
                   type="button"
                   class="counter-btn"
