@@ -83,7 +83,6 @@ function ensureHeaderControls() {
   }
 
   const sequence = getRoundSequence(selectedGameMode);
-  
 
   let controlsDiv = roundHeader.querySelector(".header-controls");
   if (!controlsDiv) {

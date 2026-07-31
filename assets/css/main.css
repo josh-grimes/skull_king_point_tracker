@@ -301,7 +301,7 @@ input:checked + .slider:before {
 
 .prev-round-btn:hover,
 .prev-round-btn:active {
- background: rgba(225, 192, 80, 0.15);
+  background: rgba(225, 192, 80, 0.15);
   color: #f3d46a;
   border-color: #f3d46a;
 }
