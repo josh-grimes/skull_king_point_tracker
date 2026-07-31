@@ -35,10 +35,12 @@ function switchScreen(targetScreenId) {
 function updateTableRows() {
   if (!tbody || !input) return;
 
-  let targetCount = parseInt(input.value) || 2;
-  if (targetCount < 2) targetCount = 2;
-  if (targetCount > 8) targetCount = 8;
-  input.value = targetCount;
+  // Read current input value; default to 2 if empty or invalid
+  let rawValue = parseInt(input.value);
+  if (isNaN(rawValue)) return; // Allow user to backspace/type without instant overwrite
+
+  // Clamp player count strictly between 2 and 8 for rendering
+  let targetCount = Math.min(Math.max(rawValue, 2), 8);
 
   const currentCount = tbody.children.length;
 
@@ -56,6 +58,17 @@ function updateTableRows() {
       tbody.removeChild(tbody.lastChild);
     }
   }
+}
+
+// Clamp the input field value to 2-8 once focus leaves or user presses Enter
+if (input) {
+  input.addEventListener("change", () => {
+    let val = parseInt(input.value) || 2;
+    if (val < 2) val = 2;
+    if (val > 8) val = 8;
+    input.value = val;
+    updateTableRows();
+  });
 }
 
 function ensureHeaderControls() {

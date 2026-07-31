@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Skull King</title>
 
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -11,7 +14,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
+      rel="stylesheet"
+    />
 
     <script src="js/state.js" defer></script>
     <script src="js/modal.js" defer></script>
@@ -47,11 +53,15 @@
         </button>
         <button class="btn">
           <span class="top-line">Whirlpool</span>
-          <span class="bottom-line">10 rounds (Two sets of rounds going down: 9, 7, 5, 3, 1)</span>
+          <span class="bottom-line"
+            >10 rounds (Two sets of rounds going down: 9, 7, 5, 3, 1)</span
+          >
         </button>
         <button class="btn">
           <span class="top-line">Past Your Bedtime</span>
-          <span class="bottom-line">1 round (1 card... followed by a goodnight hug)</span>
+          <span class="bottom-line"
+            >1 round (1 card... followed by a goodnight hug)</span
+          >
         </button>
       </div>
     </section>
@@ -64,7 +74,7 @@
 
       <div id="num_players">
         <label for="rowCount">Number of Players</label>
-        <input type="number" id="rowCount" value="3" min="2" max="8" inputmode="numeric" />
+        <input type="number" id="rowCount" value="3" min="2" max="8" />
       </div>
 
       <table id="dynamicTable">
@@ -101,19 +111,21 @@
 
     <!-- ROUNDS SCREEN -->
     <section id="rounds" class="hidden">
-  <header class="header-nav">
-    <button class="back-menu-btn">← Main Menu</button>
-    <button class="prev-round-btn" id="prev-round-btn">Previous Round</button>
-  </header>
-  
-  <h2 id="round-title-heading">Round 1 of 10</h2>
-  <div id="cards-dealt-subtitle" class="cards-dealt-subtitle">(1 Card)</div>
+      <header class="header-nav">
+        <button class="back-menu-btn">← Main Menu</button>
+        <button class="prev-round-btn" id="prev-round-btn">
+          Previous Round
+        </button>
+      </header>
 
-  <div id="players-container"></div>
+      <h2 id="round-title-heading">Round 1 of 10</h2>
+      <div id="cards-dealt-subtitle" class="cards-dealt-subtitle">(1 Card)</div>
 
-  <div class="btn-container">
-    <button type="submit" id="submit-round-btn">Submit Round</button>
-  </div>
-</section>
+      <div id="players-container"></div>
+
+      <div class="btn-container">
+        <button type="submit" id="submit-round-btn">Submit Round</button>
+      </div>
+    </section>
   </body>
 </html>
