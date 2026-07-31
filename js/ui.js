@@ -35,10 +35,12 @@ function switchScreen(targetScreenId) {
 function updateTableRows() {
   if (!tbody || !input) return;
 
-  let targetCount = parseInt(input.value) || 2;
-  if (targetCount < 2) targetCount = 2;
-  if (targetCount > 8) targetCount = 8;
-  input.value = targetCount;
+  // Read current input value without forcefully overwriting mid-keystroke
+  let rawValue = parseInt(input.value);
+  if (isNaN(rawValue)) return;
+
+  // Clamp internal row creation between 2 and 8
+  let targetCount = Math.min(Math.max(rawValue, 2), 8);
 
   const currentCount = tbody.children.length;
 
@@ -58,6 +60,17 @@ function updateTableRows() {
   }
 }
 
+// Enforce limits (2 through 8) when focus leaves the player count input box
+if (input) {
+  input.addEventListener("change", () => {
+    let val = parseInt(input.value) || 2;
+    if (val < 2) val = 2;
+    if (val > 8) val = 8;
+    input.value = val;
+    updateTableRows();
+  });
+}
+
 function ensureHeaderControls() {
   const roundHeader = document.querySelector("#rounds header");
   if (!roundHeader) return;
@@ -70,7 +83,6 @@ function ensureHeaderControls() {
   }
 
   const sequence = getRoundSequence(selectedGameMode);
-  roundTitle.textContent = `Round ${currentRoundIndex + 1} of ${sequence.length} (${getCardsDealt()} Cards)`;
 
   let controlsDiv = roundHeader.querySelector(".header-controls");
   if (!controlsDiv) {
@@ -129,7 +141,7 @@ function renderRoundPlayers() {
           <input type="number" class="bids" placeholder="Bid" min="0" max="${cardsDealt}" />
           <input type="number" class="won" placeholder="Won" min="0" max="${cardsDealt}" />
           <input type="number" class="points" placeholder="Points" readonly />
-          <input type="number" class="bonus" placeholder="Bonus" readonly ${isGrimesMode ? 'style="display:none;"' : ""} />
+          <input type="text" class="bonus" placeholder="Bonus" readonly ${isGrimesMode ? 'style="display:none;"' : ""} />
           <input type="number" class="total" placeholder="Total" readonly />
         </div>
       `;

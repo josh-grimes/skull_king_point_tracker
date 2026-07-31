@@ -30,18 +30,7 @@ function attachRealtimeCalculations() {
 
     if (bidInput) bidInput.addEventListener("input", updateCardScores);
     if (wonInput) wonInput.addEventListener("input", updateCardScores);
-
-    if (bonusInput) {
-      bonusInput.addEventListener("input", updateCardScores);
-      bonusInput.addEventListener("click", () => {
-        // Prevent opening the modal if it's Greybeard's Ghost
-        if (isGhost) return;
-
-        if (typeof openBonusModal === "function") {
-          openBonusModal(bonusInput, bonusInput.bonusData || null);
-        }
-      });
-    }
+    if (bonusInput) bonusInput.addEventListener("input", updateCardScores);
   });
 }
 
@@ -161,3 +150,30 @@ function validateTotalWonTricks() {
     alert(`Total tricks won in this round cannot exceed ${cardsDealt}!`);
   }
 }
+
+// Delegated Bonus Modal Launcher
+function handleBonusClick(target) {
+  const bonusInput = target.closest(".bonus");
+  if (!bonusInput) return;
+
+  const card = bonusInput.closest(".player-round-card");
+  if (!card) return;
+
+  const playerIndex = parseInt(card.dataset.playerIndex);
+  const isGhost = players[playerIndex] && players[playerIndex].isGhost;
+
+  if (isGhost) return;
+
+  if (typeof openBonusModal === "function") {
+    openBonusModal(bonusInput, bonusInput.bonusData || null);
+  }
+}
+
+// Global Event Listeners for Modal Triggering
+document.addEventListener("click", (e) => handleBonusClick(e.target));
+document.addEventListener("mousedown", (e) => {
+  if (e.target && e.target.classList && e.target.classList.contains("bonus")) {
+    e.preventDefault();
+    handleBonusClick(e.target);
+  }
+});

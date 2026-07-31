@@ -87,7 +87,6 @@
   max-width: 60%;
 }
 
-/* Counter controls (+ / -) */
 .counter-control {
   display: flex;
   align-items: center;
@@ -119,7 +118,6 @@
   font-family: inherit;
 }
 
-/* Small toggle switches for modal */
 .switch-sm {
   position: relative;
   display: inline-block;
@@ -144,7 +142,6 @@
   transform: translateX(20px);
 }
 
-/* Rascal & Alliance Buttons */
 .rascal-btn-group,
 .alliance-controls {
   display: flex;
