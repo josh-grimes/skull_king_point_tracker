@@ -4,17 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Skull King</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/screens.css" />
+    <link rel="stylesheet" href="assets/css/modal.css" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap"
       rel="stylesheet"
     />
+
+    <script src="js/state.js" defer></script>
+    <script src="js/modal.js" defer></script>
+    <script src="js/scoring.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/main.js" defer></script>
   </head>
   <body>
-    <!-- Screen 1: Game Mode Selection (Visible by default) -->
     <section id="game-mode">
       <h1>Skull King</h1>
       <h2>Select Game Mode:</h2>
@@ -25,27 +33,19 @@
         </button>
         <button class="btn">
           <span class="top-line">Even Keeled</span>
-          <span class="bottom-line"
-            >5 rounds (2, 4, 6, 8, & 10 cards)</span
-          >
+          <span class="bottom-line">5 rounds (2, 4, 6, 8, & 10 cards)</span>
         </button>
         <button class="btn">
           <span class="top-line">Skip to the Brawl</span>
-          <span class="bottom-line"
-            >5 rounds (6, 7, 8, 9, & 10 cards)</span
-          >
+          <span class="bottom-line">5 rounds (6, 7, 8, 9, & 10 cards)</span>
         </button>
         <button class="btn">
           <span class="top-line">Swift-n-Salty Skirmish</span>
-          <span class="bottom-line"
-            >5 rounds (5 cards every round)</span
-          >
+          <span class="bottom-line">5 rounds (5 cards every round)</span>
         </button>
         <button class="btn">
           <span class="top-line">Broadside Barrage</span>
-          <span class="bottom-line"
-            >10 rounds (10 cards every round)</span
-          >
+          <span class="bottom-line">10 rounds (10 cards every round)</span>
         </button>
         <button class="btn">
           <span class="top-line">Whirlpool</span>
@@ -56,12 +56,23 @@
         <button class="btn">
           <span class="top-line">Past Your Bedtime</span>
           <span class="bottom-line"
-            >1 round (1 card... followed by a goodnight
-            hug)</span
+            >1 round (1 card... followed by a goodnight hug)</span
           >
         </button>
       </div>
-      <h2>Other:</h2>
+    </section>
+
+    <section id="setup-screen" class="hidden">
+      <button class="back-menu-btn">← Main Menu</button>
+      <div id="num_players">
+        <label for="rowCount">Number of Players</label>
+        <input type="number" id="rowCount" value="3" min="2" max="8" />
+      </div>
+
+      <table id="dynamicTable">
+        <tbody></tbody>
+      </table>
+      <h2>Advanced:</h2>
       <div id="togglable">
         <div id="expansion">
           <label>Expansion Pack</label>
@@ -85,33 +96,284 @@
           </label>
         </div>
       </div>
-    </section>
-
-    <!-- Screen 2: Player Setup Screen -->
-    <section id="setup-screen" class="hidden">
-      <div id="num_players">
-        <label for="rowCount">Number of Players</label>
-        <input type="number" id="rowCount" value="3" min="2" max="8" />
-      </div>
-
-      <table id="dynamicTable">
-        <tbody></tbody>
-      </table>
       <div class="btn-container">
         <button id="start-btn">Start Game</button>
       </div>
     </section>
 
-    <!-- Screen 3: Gameplay / Rounds Screen -->
     <section id="rounds" class="hidden">
+      <div class="round-header-controls">
+        <button class="back-menu-btn" id="back-menu-btn">← Main Menu</button>
+        <button class="back-btn" id="prev-round-btn" class="prev-round-btn">
+          Previous Round
+        </button>
+      </div>
       <h2 id="round-title">Round 1</h2>
 
-      <!-- JavaScript will dynamically insert player scorecards here -->
       <div id="players-container"></div>
 
       <div class="btn-container">
         <button type="submit" id="submit-round-btn">Submit Round</button>
       </div>
     </section>
+    <div id="bonus-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Select Bonus Points</h3>
+          <button class="modal-close-btn" id="close-bonus-modal">
+            &times;
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="bonus-category">
+            <h4>Standard Bonuses</h4>
+            <p class="bonus-note">Awarded only when meeting your exact bid</p>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Green, Yellow, Purple 14s (+10 ea)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="std-14s"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="std-14s"
+                  value="0"
+                  data-max="3"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="std-14s"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Black 14 (+20)</span>
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="black-14"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="black-14"
+                  value="0"
+                  data-max="1"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="black-14"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Pirate captured by Skull King (+30 ea)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="pirates-captured"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="pirates-captured"
+                  value="0"
+                  data-max="5"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="pirates-captured"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Mermaid captured by Pirate (+20 ea)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="mermaids-captured"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="mermaids-captured"
+                  value="0"
+                  data-max="2"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="mermaids-captured"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Skull King captured by Mermaid (+40)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sk-by-mermaid"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="sk-by-mermaid"
+                  value="0"
+                  data-max="1"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sk-by-mermaid"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option alliance-option">
+              <span class="bonus-label">Alliance Card (+20)</span>
+              <div class="alliance-controls">
+                <button
+                  type="button"
+                  id="alliance-toggle-btn"
+                  class="rascal-btn"
+                >
+                  Off
+                </button>
+                <select
+                  id="alliance-partner-select"
+                  class="bonus-select hidden"
+                >
+                  <option value="">Partner</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Rascal Bet</span>
+              <div class="rascal-btn-group">
+                <button type="button" class="rascal-btn" data-value="10">
+                  +10
+                </button>
+                <button type="button" class="rascal-btn" data-value="20">
+                  +20
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="expansion-category" class="bonus-category hidden">
+            <h4>Expansion & Special Cards</h4>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Expansion 8 (+5)</span>
+              <label class="switch-sm">
+                <input type="checkbox" id="exp-8" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Expansion 7 (-5)</span>
+              <label class="switch-sm">
+                <input type="checkbox" id="exp-7" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">First Mate (+30)</span>
+              <label class="switch-sm">
+                <input type="checkbox" id="first-mate" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Sea Monsters (+20 ea)</span>
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sea-monsters"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input type="number" id="sea-monsters" value="0" readonly />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sea-monsters"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="total-preview">
+            Total Bonus: <span id="bonus-preview">0</span>
+          </div>
+          <button id="apply-bonus-btn">Apply Bonus</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -1,0 +1,239 @@
+/* ==========================================
+   SCREEN 1: GAME MODE SELECTION
+   ========================================== */
+#mode-select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+#mode-select button {
+  width: 80%;
+  max-width: 500px;
+}
+
+#expansion,
+#rascel-scoring,
+#grimes-family {
+  text-align: center;
+  color: #e1c050;
+  margin-bottom: 20px;
+}
+
+#expansion {
+  grid-row: 1/2;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+}
+
+#rascel-scoring {
+  grid-row: 2/3;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+}
+
+#grimes-family {
+  grid-row: 3/4;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr;
+}
+
+#togglable {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 80%;
+  max-width: 400px;
+  margin: auto;
+}
+
+/* ==========================================
+   SCREEN 2: SETUP SCREEN
+   ========================================== */
+#setup-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 60px 15px 40px 15px; /* Reduced top padding for a smaller gap */
+  width: 100%;
+}
+
+#num_players {
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  align-items: center;
+  background-color: #222328;
+  color: #efefef;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+  gap: 15px;
+}
+
+#num_players label {
+  text-align: right;
+  color: #ffffff;
+  font-size: 1.6em;
+}
+
+#num_players input {
+  text-align: center;
+  color: #e1c050;
+  font-size: 1.2em;
+  background: #616163;
+  font-family: "Rock Salt", cursive;
+  border-radius: 8px;
+  border: none;
+  padding: 5px;
+  width: 70px;
+}
+
+#dynamicTable {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+#dynamicTable td {
+  font-size: 1em;
+  text-align: center;
+  padding: 10px;
+}
+
+.num {
+  width: 50px;
+  color: #e1c050;
+}
+
+.player {
+  width: 250px;
+  color: #efefef;
+  border-bottom: 1px solid #616163;
+}
+
+/* ==========================================
+   SCREEN 3: ROUNDS & GAMEPLAY
+   ========================================== */
+#rounds {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 10px 40px 10px; /* Reduced top padding for a smaller gap */
+  width: 100%;
+}
+
+.player-round-card {
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 2px solid #616163;
+  overflow: hidden;
+  background: #616163;
+}
+
+.player-info {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  align-items: center;
+  background: #616163;
+  padding: 10px;
+}
+
+.player-name {
+  color: #efefef;
+}
+
+.place {
+  color: #e1c050;
+  text-align: right;
+}
+
+.total-points {
+  color: #ffffff;
+  text-align: right;
+}
+
+.player-points {
+  display: grid;
+  grid-template-columns: minmax(50px, 75px) repeat(3, minmax(0, 1fr));
+  grid-template-rows: 1fr 1fr;
+  height: 90px;
+  width: 100%;
+}
+
+.player-points input {
+  width: 100%;
+  min-width: 0; 
+  height: 100%;
+  text-align: center;
+  font-family: "Rock Salt", cursive;
+  border: 1px solid #616163;
+  background: #ffffff;
+  font-size: 0.9em;
+}
+
+::placeholder {
+  color: #e1c050;
+  opacity: 0.8;
+}
+
+.player-points .bids {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  color: #e1c050;
+  background: #222328;
+}
+
+.player-points .won {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  background: #222328;
+  color: #e1c050;
+}
+
+.player-points .points {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  background: #222328;
+  color: #efefef;
+}
+
+.player-points .bonus {
+  grid-column: 3 / 4;
+  grid-row: 1 / 3;
+  background: #222328;
+  color: #efefef;
+}
+
+.player-points .total {
+  grid-column: 4 / 5;
+  grid-row: 1 / 3;
+  background: #222328;
+  color: #efefef;
+  font-weight: bold;
+}
+
+.player-points.grimes-mode {
+  grid-template-columns: minmax(50px, 75px) repeat(2, minmax(0, 1fr));
+}
+
+.player-points.grimes-mode .total {
+  grid-column: 3 / 4;
+}
+
+/* Styling for Greybeard's Ghost disabled boxes */
+.player-points input.ghost-input {
+  color: #ffffff;
+  background-color: #38393e;
+  border: 1px solid #616163;
+  text-align: center;
+  font-weight: bold;
+  cursor: not-allowed;
+  user-select: none;
+}
+

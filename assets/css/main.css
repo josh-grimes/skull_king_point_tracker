@@ -1,0 +1,481 @@
+/* ==========================================
+   1. GLOBAL & RESET STYLES
+   ========================================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #222328;
+  font-family: "Rock Salt", cursive;
+  position: relative;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  color: #ffffff;
+  margin: 0;
+  font-size: 4em;
+}
+
+h2 {
+  text-align: center;
+  color: #e1c050;
+  margin: 20px 0;
+  font-size: 2em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Hide arrow buttons on number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ==========================================
+   2. REUSABLE BUTTON & CONTAINER STYLES
+   ========================================== */
+.btn-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 24px;
+}
+
+button {
+  background: #e1c050;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  font-family: "Rock Salt", cursive;
+  color: #222328;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f3d46a;
+}
+
+.back-menu-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  color: #e1c050;
+  font-size: 0.8em;
+  padding: 6px 12px;
+  border: 1px solid #e1c050;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.back-menu-btn:hover {
+  background: rgba(225, 192, 80, 0.1);
+  color: #f3d46a;
+  border-color: #f3d46a;
+}
+
+.btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.btn .top-line {
+  font-size: 24px;
+  font-weight: 900;
+  color: #222328;
+}
+
+.btn .bottom-line {
+  font-size: 12px;
+  font-weight: normal;
+  color: #222328;
+}
+
+/* ==========================================
+   3. TOGGLES & SLIDERS
+   ========================================== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  justify-self: center;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #e1c050;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #e1c050;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.card-count-subtitle {
+  display: block;
+  font-size: 0.65em;
+  color: #ffffff;
+  margin-top: 6px;
+}
+
+/* ==========================================
+   4. RESPONSIVE BREAKPOINTS (Mobile)
+   ========================================== */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2.2em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+  }
+
+  .player-points input {
+    font-size: 0.75em;
+  }
+
+  #num_players label {
+    font-size: 1.3em !important;
+  }
+
+  .back-menu-btn {
+    top: 15px;
+    left: 15px;
+    font-size: 0.7em;
+    padding: 4px 8px;
+  }
+}
+/* ==========================================
+   2. REUSABLE BUTTON & CONTAINER STYLES
+   ========================================== */
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 150px;
+  background: transparent;
+  color: #e1c050;
+  font-size: 0.8em;
+  padding: 6px 12px;
+  border: 1px solid #e1c050;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.back-btn:hover {
+  background: rgba(225, 192, 80, 0.1);
+  color: #f3d46a;
+  border-color: #f3d46a;
+}
+
+/* ==========================================
+   4. RESPONSIVE BREAKPOINTS (Mobile)
+   ========================================== */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2.2em;
+  }
+
+  h2 {
+    font-size: 1.2em;
+  }
+
+  .player-points input {
+    font-size: 0.75em;
+  }
+
+  #num_players {
+    width: 95%;
+  }
+
+  #num_players label {
+    font-size: 1.1em !important;
+    text-align: left;
+  }
+
+  #num_players input {
+    font-size: 1em;
+    width: 60px;
+  }
+
+  .back-menu-btn {
+    top: 10px;
+    left: 10px;
+    font-size: 0.75em;
+    padding: 5px 8px;
+  }
+}
+/* ==========================================
+   MODAL DIALOG STYLES
+   ========================================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 15px;
+}
+
+.modal-content {
+  background: #2b2c32;
+  border: 2px solid #e1c050;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  color: #efefef;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #616163;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #e1c050;
+  font-size: 1.3em;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #efefef;
+  font-size: 1.8em;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 15px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bonus-category h4 {
+  margin: 0 0 4px 0;
+  color: #e1c050;
+  font-size: 1.1em;
+  border-bottom: 1px solid #616163;
+  padding-bottom: 4px;
+}
+
+.bonus-note {
+  font-size: 0.7em;
+  color: #aaa;
+  margin: 0 0 10px 0;
+}
+
+.bonus-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.bonus-label {
+  font-size: 0.85em;
+  max-width: 70%;
+}
+
+/* Counter controls (+ / -) */
+.counter-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.counter-btn {
+  background: #616163;
+  color: #fff;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  font-size: 1.2em;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.counter-control input {
+  width: 36px;
+  text-align: center;
+  background: #222328;
+  color: #e1c050;
+  border: 1px solid #616163;
+  border-radius: 4px;
+  padding: 4px;
+  font-family: inherit;
+}
+
+/* Small toggle switches for modal */
+.switch-sm {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch-sm input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-sm .slider:before {
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+}
+
+.switch-sm input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Rascal Bet Buttons */
+.rascal-btn-group {
+  display: flex;
+  gap: 6px;
+}
+
+.rascal-btn {
+  background: #222328;
+  color: #e1c050;
+  border: 1px solid #616163;
+  padding: 6px 12px;
+  font-size: 0.85em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rascal-btn.active {
+  background: #e1c050;
+  color: #222328;
+  border-color: #e1c050;
+  font-weight: bold;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #616163;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #222328;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.total-preview {
+  font-size: 1.1em;
+  color: #ffffff;
+}
+
+.total-preview span {
+  color: #e1c050;
+  font-weight: bold;
+}
+
+/* Reduce table width so columns sit tighter together */
+#dynamicTable {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: auto; /* Prevents the table from taking up full screen width */
+  min-width: 280px; /* Keeps a clean minimum width for the setup area */
+}
+
+/* Tighten the number column */
+#dynamicTable td:first-child,
+#dynamicTable th:first-child {
+  color: #e1c050; /* Gold/Yellow player numbers */
+  font-weight: bold;
+  text-align: right; /* Align numbers toward the player name */
+  padding-right: 10px; /* Small gap between number and name */
+  width: 40px; /* Keeps the number column compact */
+  font-size:1.2em;
+}
+
+/* Align and tighten the player name column */
+#dynamicTable td.player {
+  text-align: center; /* Align text toward the numbers */
+  padding-left: 10px;
+  font-size:1.2em;
+}
+
