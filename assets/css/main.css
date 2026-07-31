@@ -478,3 +478,236 @@ input:checked + .slider:before {
   padding-left: 10px;
   font-size: 1.2em;
 }
+
+/* ==========================================
+   MOBILE & GLOBAL LAYOUT ADJUSTMENTS
+   ========================================== */
+* {
+  box-sizing: border-box;
+  touch-action: manipulation; /* Prevents 300ms touch delay on mobile */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #222328;
+  font-family: "Rock Salt", cursive;
+  min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1 {
+  text-align: center;
+  color: #ffffff;
+  margin: 10px 0;
+  font-size: clamp(1.8em, 6vw, 3.8em);
+}
+
+h2 {
+  text-align: center;
+  color: #e1c050;
+  margin: 15px 0;
+  font-size: clamp(1.1em, 4vw, 2em);
+}
+
+/* Prevent auto-zoom on mobile text inputs */
+input, select, button {
+  font-size: 16px !important;
+}
+
+/* Screen Sections Padding */
+#game-mode, #setup-screen, #rounds {
+  padding: 15px 12px 30px 12px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Round Header Navigation Controls */
+.round-header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.back-menu-btn, .back-btn {
+  position: static !important; /* Replaced absolute positioning for mobile */
+  background: transparent;
+  color: #e1c050;
+  font-size: 0.8em !important;
+  padding: 8px 12px;
+  border: 1px solid #e1c050;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex: 1;
+  text-align: center;
+}
+
+/* Player Setup Input Fields */
+.player-name-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #616163;
+  color: #efefef;
+  font-family: "Rock Salt", cursive;
+  text-align: center;
+  width: 100%;
+  padding: 6px;
+}
+
+.player-name-input:focus {
+  outline: none;
+  border-bottom-color: #e1c050;
+}
+
+/* Player Score Cards Grid Layout */
+.player-round-card {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 2px solid #616163;
+  overflow: hidden;
+  background: #2b2c32;
+}
+
+.player-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #616163;
+  padding: 8px 12px;
+}
+
+.player-name {
+  color: #efefef;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.place {
+  color: #e1c050;
+  font-size: 0.85em;
+}
+
+.total-points {
+  color: #ffffff;
+  font-size: 0.85em;
+}
+
+.player-points {
+  display: grid;
+  grid-template-columns: minmax(55px, 1fr) repeat(3, minmax(0, 1fr));
+  grid-template-rows: 1fr 1fr;
+  height: 80px;
+}
+
+.player-points input {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-family: "Rock Salt", cursive;
+  border: 1px solid #38393e;
+  border-radius: 0;
+}
+
+/* Modal Responsive Improvements */
+.modal-content {
+  width: 95vw;
+  max-width: 480px;
+  max-height: 85vh;
+}
+
+.modal-body {
+  padding: 12px;
+  gap: 15px;
+}
+
+.bonus-label {
+  font-size: 0.8em;
+  max-width: 55%;
+  line-height: 1.2;
+}
+
+/* ==========================================
+   UNIFIED HEADER & BACK BUTTON STYLES
+   ========================================== */
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+/* Identical Main Menu Button styling on all screens */
+.back-menu-btn {
+  position: static !important;
+  background: transparent;
+  color: #e1c050;
+  font-size: 0.85em !important;
+  font-family: "Rock Salt", cursive;
+  padding: 8px 14px;
+  border: 1px solid #e1c050;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+}
+
+.back-menu-btn:hover,
+.back-menu-btn:active {
+  background: rgba(225, 192, 80, 0.15);
+  color: #f3d46a;
+  border-color: #f3d46a;
+}
+
+/* Secondary Header Action Button (e.g., Previous Round) */
+.prev-round-btn {
+  background: transparent;
+  color: #e1c050;
+  font-size: 0.75em !important;
+  font-family: "Rock Salt", cursive;
+  padding: 8px 12px;
+  border: 1px solid #e1c050;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease-in-out;
+}
+
+.prev-round-btn:hover {
+  background: rgba(225, 192, 80, 0.15);
+  color: #f3d46a;
+  border-color: #f3d46a;
+}
+/* Header navigation: Places both buttons side-by-side at the top */
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Gold Round Title */
+#round-title-heading {
+  text-align: center;
+  color: #e1c050;
+  margin: 10px 0 4px 0;
+  font-size: clamp(1.2em, 4vw, 1.8em);
+}
+
+/* White Subtitle below the title */
+.cards-dealt-subtitle {
+  text-align: center;
+  color: #ffffff;
+  font-size: 0.9em;
+  font-family: "Rock Salt", cursive;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}

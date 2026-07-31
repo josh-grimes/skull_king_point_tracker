@@ -62,30 +62,31 @@ function ensureHeaderControls() {
   const roundHeader = document.querySelector("#rounds header");
   if (!roundHeader) return;
 
-  let roundTitle = roundHeader.querySelector("#round-title-heading");
-  if (!roundTitle) {
-    roundTitle = document.createElement("h2");
-    roundTitle.id = "round-title-heading";
-    roundHeader.prepend(roundTitle);
+  // Locate or create the subtitle element for cards dealt
+  let cardsSubtitle = document.getElementById("cards-dealt-subtitle");
+  if (!cardsSubtitle) {
+    cardsSubtitle = document.createElement("div");
+    cardsSubtitle.id = "cards-dealt-subtitle";
+    cardsSubtitle.className = "cards-dealt-subtitle";
+    // Insert immediately after the round title heading
+    const roundTitle = document.getElementById("round-title-heading");
+    if (roundTitle && roundTitle.parentNode) {
+      roundTitle.parentNode.insertBefore(cardsSubtitle, roundTitle.nextSibling);
+    } else {
+      roundHeader.appendChild(cardsSubtitle);
+    }
   }
 
   const sequence = getRoundSequence(selectedGameMode);
-  roundTitle.textContent = `Round ${currentRoundIndex + 1} of ${sequence.length} (${getCardsDealt()} Cards)`;
+  const roundTitle = document.getElementById("round-title-heading");
+  const cardsCount = getCardsDealt();
 
-  let controlsDiv = roundHeader.querySelector(".header-controls");
-  if (!controlsDiv) {
-    controlsDiv = document.createElement("div");
-    controlsDiv.className = "header-controls";
-    roundHeader.appendChild(controlsDiv);
+  if (roundTitle) {
+    roundTitle.textContent = `Round ${currentRoundIndex + 1} of ${sequence.length}`;
   }
 
-  let prevBtn = document.getElementById("prev-round-btn");
-  if (!prevBtn) {
-    prevBtn = document.createElement("button");
-    prevBtn.id = "prev-round-btn";
-    prevBtn.className = "btn prev-round-btn";
-    prevBtn.textContent = "Previous Round";
-    controlsDiv.appendChild(prevBtn);
+  if (cardsSubtitle) {
+    cardsSubtitle.textContent = `(${cardsCount} ${cardsCount === 1 ? "Card" : "Cards"})`;
   }
 }
 

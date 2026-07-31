@@ -59,7 +59,7 @@
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  padding: 60px 15px 40px 15px; /* Reduced top padding for a smaller gap */
+  padding: 40px 15px 40px 15px; /* Reduced top padding for a smaller gap */
   width: 100%;
 }
 
@@ -124,7 +124,7 @@
   position: relative;
   max-width: 600px;
   margin: 0 auto;
-  padding: 60px 10px 40px 10px; /* Reduced top padding for a smaller gap */
+  padding: 40px 10px 40px 10px; /* Reduced top padding for a smaller gap */
   width: 100%;
 }
 
@@ -235,4 +235,22 @@
   font-weight: bold;
   cursor: not-allowed;
   user-select: none;
+}
+
+.back-menu-btn,
+.prev-round-btn {
+  flex: 1; /* Equal 50/50 width distribution */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px; /* Fixed height for uniform touch targets */
+  padding: 6px 12px;
+  font-family: "Rock Salt", cursive;
+  font-size: clamp(0.65em, 2.5vw, 0.8em) !important;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
 }
