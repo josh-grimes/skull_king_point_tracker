@@ -94,8 +94,7 @@ function updateAllianceUI() {
 }
 
 function populateAlliancePartners(activePlayerIndex) {
-  alliancePartnerSelect.innerHTML =
-    '<option value="">Partner</option>';
+  alliancePartnerSelect.innerHTML = '<option value="">Partner</option>';
 
   players.forEach((p, index) => {
     if (index !== activePlayerIndex) {

@@ -469,13 +469,12 @@ input:checked + .slider:before {
   text-align: right; /* Align numbers toward the player name */
   padding-right: 10px; /* Small gap between number and name */
   width: 40px; /* Keeps the number column compact */
-  font-size:1.2em;
+  font-size: 1.2em;
 }
 
 /* Align and tighten the player name column */
 #dynamicTable td.player {
   text-align: center; /* Align text toward the numbers */
   padding-left: 10px;
-  font-size:1.2em;
+  font-size: 1.2em;
 }
-

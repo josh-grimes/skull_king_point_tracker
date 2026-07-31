@@ -45,8 +45,6 @@ function attachRealtimeCalculations() {
   });
 }
 
-
-
 function calculatePlayerScore(card) {
   const playerIndex = parseInt(card.dataset.playerIndex);
   if (players[playerIndex] && players[playerIndex].isGhost) {
@@ -59,7 +57,12 @@ function calculatePlayerScore(card) {
   const bonusInput = card.querySelector(".bonus");
   const totalInput = card.querySelector(".total");
 
-  if (!bidInput || !wonInput || bidInput.value === "" || wonInput.value === "") {
+  if (
+    !bidInput ||
+    !wonInput ||
+    bidInput.value === "" ||
+    wonInput.value === ""
+  ) {
     if (pointsInput) pointsInput.value = "";
     if (totalInput) totalInput.value = "";
     return;
