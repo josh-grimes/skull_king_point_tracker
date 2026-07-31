@@ -127,5 +127,264 @@
         <button type="submit" id="submit-round-btn">Submit Round</button>
       </div>
     </section>
+    <div id="bonus-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Select Bonus Points</h3>
+          <button class="modal-close-btn" id="close-bonus-modal">
+            &times;
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="bonus-category">
+            <h4>Standard Bonuses</h4>
+            <p class="bonus-note">Awarded only when meeting your exact bid</p>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Green, Yellow, Purple 14s (+10 ea)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="std-14s"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="std-14s"
+                  value="0"
+                  data-max="3"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="std-14s"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Black 14 (+20)</span>
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="black-14"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="black-14"
+                  value="0"
+                  data-max="1"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="black-14"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Pirate captured by Skull King (+30 ea)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="pirates-captured"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="pirates-captured"
+                  value="0"
+                  data-max="5"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="pirates-captured"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Mermaid captured by Pirate (+20 ea)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="mermaids-captured"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="mermaids-captured"
+                  value="0"
+                  data-max="2"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="mermaids-captured"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label"
+                >Skull King captured by Mermaid (+40)</span
+              >
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sk-by-mermaid"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="sk-by-mermaid"
+                  value="0"
+                  data-max="1"
+                  readonly
+                />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sk-by-mermaid"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="bonus-option alliance-option">
+              <span class="bonus-label">Alliance Card (+20)</span>
+              <div class="alliance-controls">
+                <button
+                  type="button"
+                  id="alliance-toggle-btn"
+                  class="rascal-btn"
+                >
+                  Off
+                </button>
+                <select
+                  id="alliance-partner-select"
+                  class="bonus-select hidden"
+                >
+                  <option value="">Partner</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Rascal Bet</span>
+              <div class="rascal-btn-group">
+                <button type="button" class="rascal-btn" data-value="10">
+                  +10
+                </button>
+                <button type="button" class="rascal-btn" data-value="20">
+                  +20
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="expansion-category" class="bonus-category hidden">
+            <h4>Expansion & Special Cards</h4>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Expansion 8 (+5)</span>
+              <label class="switch-sm">
+                <input type="checkbox" id="exp-8" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Expansion 7 (-5)</span>
+              <label class="switch-sm">
+                <input type="checkbox" id="exp-7" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">First Mate (+30)</span>
+              <label class="switch-sm">
+                <input type="checkbox" id="first-mate" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="bonus-option">
+              <span class="bonus-label">Sea Monsters (+20 ea)</span>
+              <div class="counter-control">
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sea-monsters"
+                  data-dir="-1"
+                >
+                  -
+                </button>
+                <input type="number" id="sea-monsters" value="0" readonly />
+                <button
+                  type="button"
+                  class="counter-btn"
+                  data-target="sea-monsters"
+                  data-dir="1"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="total-preview">
+            Total Bonus: <span id="bonus-preview">0</span>
+          </div>
+          <button id="apply-bonus-btn">Apply Bonus</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

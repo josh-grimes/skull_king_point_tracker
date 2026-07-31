@@ -35,11 +35,11 @@ function switchScreen(targetScreenId) {
 function updateTableRows() {
   if (!tbody || !input) return;
 
-  // Read current input value; default to 2 if empty or invalid
+  // Read current input value without forcefully overwriting mid-keystroke
   let rawValue = parseInt(input.value);
-  if (isNaN(rawValue)) return; // Allow user to backspace/type without instant overwrite
+  if (isNaN(rawValue)) return;
 
-  // Clamp player count strictly between 2 and 8 for rendering
+  // Clamp internal row creation between 2 and 8
   let targetCount = Math.min(Math.max(rawValue, 2), 8);
 
   const currentCount = tbody.children.length;
@@ -60,7 +60,7 @@ function updateTableRows() {
   }
 }
 
-// Clamp the input field value to 2-8 once focus leaves or user presses Enter
+// Enforce limits (2 through 8) when focus leaves the player count input box
 if (input) {
   input.addEventListener("change", () => {
     let val = parseInt(input.value) || 2;
@@ -75,31 +75,30 @@ function ensureHeaderControls() {
   const roundHeader = document.querySelector("#rounds header");
   if (!roundHeader) return;
 
-  // Locate or create the subtitle element for cards dealt
-  let cardsSubtitle = document.getElementById("cards-dealt-subtitle");
-  if (!cardsSubtitle) {
-    cardsSubtitle = document.createElement("div");
-    cardsSubtitle.id = "cards-dealt-subtitle";
-    cardsSubtitle.className = "cards-dealt-subtitle";
-    // Insert immediately after the round title heading
-    const roundTitle = document.getElementById("round-title-heading");
-    if (roundTitle && roundTitle.parentNode) {
-      roundTitle.parentNode.insertBefore(cardsSubtitle, roundTitle.nextSibling);
-    } else {
-      roundHeader.appendChild(cardsSubtitle);
-    }
+  let roundTitle = roundHeader.querySelector("#round-title-heading");
+  if (!roundTitle) {
+    roundTitle = document.createElement("h2");
+    roundTitle.id = "round-title-heading";
+    roundHeader.prepend(roundTitle);
   }
 
   const sequence = getRoundSequence(selectedGameMode);
-  const roundTitle = document.getElementById("round-title-heading");
-  const cardsCount = getCardsDealt();
+  
 
-  if (roundTitle) {
-    roundTitle.textContent = `Round ${currentRoundIndex + 1} of ${sequence.length}`;
+  let controlsDiv = roundHeader.querySelector(".header-controls");
+  if (!controlsDiv) {
+    controlsDiv = document.createElement("div");
+    controlsDiv.className = "header-controls";
+    roundHeader.appendChild(controlsDiv);
   }
 
-  if (cardsSubtitle) {
-    cardsSubtitle.textContent = `(${cardsCount} ${cardsCount === 1 ? "Card" : "Cards"})`;
+  let prevBtn = document.getElementById("prev-round-btn");
+  if (!prevBtn) {
+    prevBtn = document.createElement("button");
+    prevBtn.id = "prev-round-btn";
+    prevBtn.className = "btn prev-round-btn";
+    prevBtn.textContent = "Previous Round";
+    controlsDiv.appendChild(prevBtn);
   }
 }
 
@@ -143,7 +142,7 @@ function renderRoundPlayers() {
           <input type="number" class="bids" placeholder="Bid" min="0" max="${cardsDealt}" />
           <input type="number" class="won" placeholder="Won" min="0" max="${cardsDealt}" />
           <input type="number" class="points" placeholder="Points" readonly />
-          <input type="number" class="bonus" placeholder="Bonus" readonly ${isGrimesMode ? 'style="display:none;"' : ""} />
+          <input type="text" class="bonus" placeholder="Bonus" readonly ${isGrimesMode ? 'style="display:none;"' : ""} />
           <input type="number" class="total" placeholder="Total" readonly />
         </div>
       `;

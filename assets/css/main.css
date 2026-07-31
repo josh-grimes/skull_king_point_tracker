@@ -305,3 +305,12 @@ input:checked + .slider:before {
   color: #f3d46a;
   border-color: #f3d46a;
 }
+
+.player-points .bonus:not(.ghost-input) {
+  cursor: pointer;
+}
+
+.player-points .bonus {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
